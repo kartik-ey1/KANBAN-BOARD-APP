@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-
+import { ThemeProvider } from 'styled-components';
 import './App.css';
-
 import List from './Components/List/List';
 import Navbar from './Components/Navbar/Navbar';
 
@@ -19,6 +18,7 @@ function App() {
   const [groupValue, setGroupValue] = useState(getStateFromLocalStorage() || 'status');
   const [orderValue, setOrderValue] = useState('title');
   const [ticketDetails, setTicketDetails] = useState([]);
+  const [theme, setTheme] = useState('light');
 
   function saveStateToLocalStorage(state) {
     localStorage.setItem('groupValue', JSON.stringify(state));
@@ -45,15 +45,8 @@ function App() {
       }
     }
 
-    // or you can use Axios library as well here is the example for that 
-    // async function fetchData() {
-    //   const response = await axios.get('https://api.quicksell.co/v1/internal/frontend-assignment');
-    //   await refactorData(response);
-
-    // }
-
     fetchData();
-  }, [orderDataByValue,groupValue]);
+  }, [orderDataByValue, groupValue]);
 
   function refactorData(data) {
     let ticketArray = [];
@@ -93,69 +86,75 @@ function App() {
 
   function handleGroupValue(value) {
     setGroupValue(value);
-    console.log(value);
   }
 
   function handleOrderValue(value) {
     setOrderValue(value);
-    console.log(value);
+  }
+
+  function toggleTheme() {
+    setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
   }
 
   return (
-    <div className="app-container">
-      <Navbar
-        groupValue={groupValue}
-        orderValue={orderValue}
-        handleGroupValue={handleGroupValue}
-        handleOrderValue={handleOrderValue}
-      />
-      <section className="board-details">
-        <div className="board-details-list">
-          {(() => {
-            switch (groupValue) {
-              case 'status':
-                return statusList.map((listItem) => (
-                  <List
-                    key={listItem}
-                    groupValue="status"
-                    orderValue={orderValue}
-                    listTitle={listItem}
-                    listIcon=""
-                    statusList={statusList}
-                    ticketDetails={ticketDetails}
-                  />
-                ));
-              case 'user':
-                return userList.map((listItem) => (
-                  <List
-                    key={listItem}
-                    groupValue="user"
-                    orderValue={orderValue}
-                    listTitle={listItem}
-                    listIcon=""
-                    userList={userList}
-                    ticketDetails={ticketDetails}
-                  />
-                ));
-              case 'priority':
-                return priorityList.map((listItem) => (
-                  <List
-                    key={listItem.priority}
-                    groupValue="priority"
-                    orderValue={orderValue}
-                    listTitle={listItem.priority}
-                    listIcon=""
-                    priorityList={priorityList}
-                    ticketDetails={ticketDetails}
-                  />
-                ));
-              default:
-                return null;
-            }
-          })()}
-        </div>
-      </section>
-    </div>
+    <ThemeProvider theme={{ mode: theme }}>
+      <div className={`app-container ${theme}`}>
+        <Navbar
+          groupValue={groupValue}
+          orderValue={orderValue}
+          handleGroupValue={handleGroupValue}
+          handleOrderValue={handleOrderValue}
+          toggleTheme={toggleTheme}
+          theme={theme}
+        />
+        <section className="board-details">
+          <div className="board-details-list">
+            {(() => {
+              switch (groupValue) {
+                case 'status':
+                  return statusList.map((listItem) => (
+                    <List
+                      key={listItem}
+                      groupValue="status"
+                      orderValue={orderValue}
+                      listTitle={listItem}
+                      listIcon=""
+                      statusList={statusList}
+                      ticketDetails={ticketDetails}
+                    />
+                  ));
+                case 'user':
+                  return userList.map((listItem) => (
+                    <List
+                      key={listItem}
+                      groupValue="user"
+                      orderValue={orderValue}
+                      listTitle={listItem}
+                      listIcon=""
+                      userList={userList}
+                      ticketDetails={ticketDetails}
+                    />
+                  ));
+                case 'priority':
+                  return priorityList.map((listItem) => (
+                    <List
+                      key={listItem.priority}
+                      groupValue="priority"
+                      orderValue={orderValue}
+                      listTitle={listItem.priority}
+                      listIcon=""
+                      priorityList={priorityList}
+                      ticketDetails={ticketDetails}
+                    />
+                  ));
+                default:
+                  return null;
+              }
+            })()}
+          </div>
+        </section>
+      </div>
+    </ThemeProvider>
   );
 }
 
