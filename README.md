@@ -1,7 +1,6 @@
 # KANBAN-BOARD-APP
-THIS IS A KANBAN-BOARD-APP USING REACT.JS
+THIS IS A KANBAN-BOARD-APP USING REACT.JS ( https://kanban-boardd-react-app.netlify.app/ )
 
-DEPLOYED AT https://kanban-boardd-react-app.netlify.app/
 
 Introduction
 The Ticket Management System is a web-based application developed in React for efficient tracking and organization of tickets.
